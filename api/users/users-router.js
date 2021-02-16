@@ -1,10 +1,11 @@
 const express = require('express');
 
 const users = require('./users-model')
+const { validateUserId } = require('../middleware/middleware')
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   // RETURN AN ARRAY WITH ALL THE USERS
   users.get()
   .then((users) => {
@@ -12,13 +13,15 @@ router.get('/', (req, res) => {
   })
   .catch((error) => {
     console.log(error)
+    next(error)
   })
 
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId(), (req, res) => {
   // RETURN THE USER OBJECT
   // this needs a middleware to verify user id
+res.json(req.user)
 });
 
 router.post('/', (req, res) => {
