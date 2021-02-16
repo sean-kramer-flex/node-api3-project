@@ -1,7 +1,7 @@
 const express = require('express');
 
 const users = require('./users-model')
-const { validateUserId } = require('../middleware/middleware')
+const { validateUserId, validateUser } = require('../middleware/middleware')
 
 const router = express.Router();
 
@@ -24,9 +24,19 @@ router.get('/:id', validateUserId(), (req, res) => {
 res.json(req.user)
 });
 
-router.post('/', (req, res) => {
+router.post('/', validateUser(), (req, res, next) => {
   // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
+  // if (!req.body.name) {
+  //   return res.status(400).json({
+  //     message: "Missing required data"
+  //   })
+  // }
+  users.insert(req.body)
+  .then((user) => {
+    res.status(201).json(user)
+  })
+  .catch(next)
 });
 
 router.put('/:id', (req, res) => {

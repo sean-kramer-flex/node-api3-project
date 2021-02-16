@@ -7,7 +7,7 @@ function logger(req, res, next) {
   next()
 }
 
-function validateUserId(req, res, next) {
+function validateUserId() {
   // DO YOUR MAGIC
   return (req, res, next) => {
 users.getById(req.params.id)
@@ -24,8 +24,17 @@ users.getById(req.params.id)
   }
 }
 
-function validateUser(req, res, next) {
+function validateUser() {
   // DO YOUR MAGIC
+  return (req, res, next) => {
+    if (!req.body.name) {
+      return res.status(400).json({
+        message: "Missing required data"
+      })
+    }
+    next()
+  }
+
 }
 
 function validatePost(req, res, next) {
@@ -36,4 +45,5 @@ function validatePost(req, res, next) {
 module.exports = {
   logger,
   validateUserId,
+  validateUser,
 }
