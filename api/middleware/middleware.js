@@ -1,4 +1,5 @@
 const users = require('../users/users-model')
+const posts = require('../posts/posts-model')
 
 function logger(req, res, next) {
   // DO YOUR MAGIC
@@ -24,6 +25,22 @@ users.getById(req.params.id)
   }
 }
 
+function validatePostId() {
+  return (req, res, next) => {
+    posts.getById(req.params.id)
+    .then((post) => {
+      if(post) {
+        req.post = post
+        next()
+      } else {
+        res.status(404).json({
+          message: "No post with that id"
+        })
+      }
+    })
+  }
+}
+
 function validateUser() {
   // DO YOUR MAGIC
   return (req, res, next) => {
@@ -46,4 +63,5 @@ module.exports = {
   logger,
   validateUserId,
   validateUser,
+  validatePostId
 }

@@ -79,7 +79,7 @@ router.post('/:id/posts', validateUserId(), (req, res, next) => {
   // and another middleware to check that the request body is valid
 if(!req.body.text) {
   res.status(404).json({
-    message: "Text and user id required"
+    message: "Text required"
   })
 } else {
   posts.insert({
