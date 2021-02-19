@@ -4,7 +4,7 @@ const postsRouter = require('./posts/posts-router')
 const { logger } = require('../api/middleware/middleware')
 
 const server = express();
-
+// console.log('server: ', server);
 // remember express by default cannot parse JSON in request bodies
 server.use(express.json())
 server.use(logger)
